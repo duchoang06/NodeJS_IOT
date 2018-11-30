@@ -14,33 +14,45 @@ var express = require('express');
 var app = express();
 
 app.get('/temp/:tempValue', function (req, res) {
-    console.log(req.params);
-    res.send(req.params);
-    //Insert key,value pair to database
-    var newPostKey = firebase.database().ref().child('Temperature').push().key;
-    var updates = {};
-    updates['/Temperature/'+Date.now()] = req.params.tempValue;
-    firebase.database().ref().update(updates);
+   res.send('Done');
+  //Insert key,value pair to database
+  return firebase.database().ref('/Temperature').once('value').then(function(snapshot) {
+    var compareTemp = snapshot.val()[Object.keys(snapshot.val())[Object.keys(snapshot.val()).length - 1]];
+    if (compareTemp !== req.params.tempValue) {
+  		var newPostKey = firebase.database().ref().child('Temperature').push().key;
+  		var updates = {};
+  		updates['/Temperature/'+Date.now()] = req.params.tempValue;
+  		firebase.database().ref().update(updates);
+  	}
+  });  
 });
 
 app.get('/humid/:humidValue', function (req, res) {
-  console.log(req.params);
-  res.send(req.params);
+  res.send('Done');
   //Insert key,value pair to database
-  var newPostKey = firebase.database().ref().child('Humidity').push().key;
-  var updates = {};
-  updates['/Humidity/'+Date.now()] = req.params.humidValue;
-  firebase.database().ref().update(updates);
+  return firebase.database().ref('/Humidity').once('value').then(function(snapshot) {
+    var compareHumid = snapshot.val()[Object.keys(snapshot.val())[Object.keys(snapshot.val()).length - 1]];
+    if (compareHumid !== req.params.humidValue) {
+  		var newPostKey = firebase.database().ref().child('Humidity').push().key;
+  		var updates = {};
+  		updates['/Humidity/'+Date.now()] = req.params.humidValue;
+  		firebase.database().ref().update(updates);
+  	}
+  });  
 });
 
 app.get('/light/:lightValue', function (req, res) {
-  console.log(req.params);
-  res.send(req.params);
+  res.send('Done');
   //Insert key,value pair to database
-  var newPostKey = firebase.database().ref().child('Light').push().key;
-  var updates = {};
-  updates['/Light/'+Date.now()] = req.params.lightValue;
-  firebase.database().ref().update(updates);
+  return firebase.database().ref('/Light').once('value').then(function(snapshot) {
+    var compareLight = snapshot.val()[Object.keys(snapshot.val())[Object.keys(snapshot.val()).length - 1]];
+    if (compareLight !== req.params.lightValue) {
+  		var newPostKey = firebase.database().ref().child('Light').push().key;
+  		var updates = {};
+  		updates['/Light/'+Date.now()] = req.params.lightValue;
+  		firebase.database().ref().update(updates);
+  	}
+  });  
 });
 
 app.get('/get/temp', function (req, res) {
