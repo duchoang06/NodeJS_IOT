@@ -13,8 +13,15 @@ firebase.initializeApp(config);
 var express = require('express');
 var app = express();
 
+function writeCurrentData() {
+
+}
+
 app.get('/temp/:tempValue', function (req, res) {
    res.send('Done');
+   firebase.database().ref('currentTemp').set({
+    req.params.tempValue;
+   });
   //Insert key,value pair to database
   return firebase.database().ref('/Temperature').once('value').then(function(snapshot) {
     var compareTemp = snapshot.val()[Object.keys(snapshot.val())[Object.keys(snapshot.val()).length - 1]];
@@ -29,6 +36,9 @@ app.get('/temp/:tempValue', function (req, res) {
 
 app.get('/humid/:humidValue', function (req, res) {
   res.send('Done');
+  firebase.database().ref('currentHumid').set({
+    req.params.humidValue;
+   });
   //Insert key,value pair to database
   return firebase.database().ref('/Humidity').once('value').then(function(snapshot) {
     var compareHumid = snapshot.val()[Object.keys(snapshot.val())[Object.keys(snapshot.val()).length - 1]];
@@ -43,6 +53,9 @@ app.get('/humid/:humidValue', function (req, res) {
 
 app.get('/light/:lightValue', function (req, res) {
   res.send('Done');
+  firebase.database().ref('currentLight').set({
+    req.params.lightValue;
+   });
   //Insert key,value pair to database
   return firebase.database().ref('/Light').once('value').then(function(snapshot) {
     var compareLight = snapshot.val()[Object.keys(snapshot.val())[Object.keys(snapshot.val()).length - 1]];
