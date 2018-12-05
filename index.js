@@ -13,17 +13,11 @@ firebase.initializeApp(config);
 var express = require('express');
 var app = express();
 
-function writeCurrentData() {
-
-}
-
 app.get('/temp/:tempValue', function (req, res) {
-   res.send('Done');
-   firebase.database().ref('currentTemp').set({
-    req.params.tempValue;
-   });
-  //Insert key,value pair to database
-  return firebase.database().ref('/Temperature').once('value').then(function(snapshot) {
+  res.send('Done: '+req.params.tempValue);
+  firebase.database().ref('/currentValue/currentTemp').set(req.params.tempValue);
+   
+  firebase.database().ref('/Temperature').once('value').then(function(snapshot) { 
     var compareTemp = snapshot.val()[Object.keys(snapshot.val())[Object.keys(snapshot.val()).length - 1]];
     if (compareTemp !== req.params.tempValue) {
   		var newPostKey = firebase.database().ref().child('Temperature').push().key;
@@ -35,12 +29,10 @@ app.get('/temp/:tempValue', function (req, res) {
 });
 
 app.get('/humid/:humidValue', function (req, res) {
-  res.send('Done');
-  firebase.database().ref('currentHumid').set({
-    req.params.humidValue;
-   });
-  //Insert key,value pair to database
-  return firebase.database().ref('/Humidity').once('value').then(function(snapshot) {
+  res.send('Done: '+req.params.humidValue);
+  firebase.database().ref('/currentValue/currentHumid').set(req.params.humidValue);
+  
+  firebase.database().ref('/Humidity').once('value').then(function(snapshot) {
     var compareHumid = snapshot.val()[Object.keys(snapshot.val())[Object.keys(snapshot.val()).length - 1]];
     if (compareHumid !== req.params.humidValue) {
   		var newPostKey = firebase.database().ref().child('Humidity').push().key;
@@ -52,12 +44,10 @@ app.get('/humid/:humidValue', function (req, res) {
 });
 
 app.get('/light/:lightValue', function (req, res) {
-  res.send('Done');
-  firebase.database().ref('currentLight').set({
-    req.params.lightValue;
-   });
-  //Insert key,value pair to database
-  return firebase.database().ref('/Light').once('value').then(function(snapshot) {
+  res.send('Done: '+req.params.lightValue);
+  firebase.database().ref('/currentValue/currentLight').set(req.params.lightValue);
+  
+  return firebase.database().ref('/Light').once('value').then(function(snapshot) { 
     var compareLight = snapshot.val()[Object.keys(snapshot.val())[Object.keys(snapshot.val()).length - 1]];
     if (compareLight !== req.params.lightValue) {
   		var newPostKey = firebase.database().ref().child('Light').push().key;
@@ -69,21 +59,18 @@ app.get('/light/:lightValue', function (req, res) {
 });
 
 app.get('/get/temp', function (req, res) {
-  var gotTemp;
   return firebase.database().ref('/Temperature').once('value').then(function(snapshot) {
     res.send(snapshot.val()[Object.keys(snapshot.val())[Object.keys(snapshot.val()).length - 1]]);
   });
 });
 
 app.get('/get/light', function (req, res) {
-  var gotTemp;
   return firebase.database().ref('/Light').once('value').then(function(snapshot) {
     res.send(snapshot.val()[Object.keys(snapshot.val())[Object.keys(snapshot.val()).length - 1]]);
   });
 });
 
 app.get('/get/humid', function (req, res) {
-  var gotTemp;
   return firebase.database().ref('/Humidity').once('value').then(function(snapshot) {
     res.send(snapshot.val()[Object.keys(snapshot.val())[Object.keys(snapshot.val()).length - 1]]);
   });
